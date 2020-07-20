@@ -1,10 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:trial3/Constants/cardbuilder.dart';
 import 'package:trial3/Constants/myDrawer.dart';
-import 'package:http/http.dart' as http;
 
 class OrderScreen extends StatefulWidget {
   @override
@@ -342,8 +340,7 @@ class _OrderScreenState extends State<OrderScreen> {
                               onChanged: (val) {
                                 setState(() {
                                   // selectedradio = e.amount;
-                                    alllval=e.index;
-                                  
+                                  alllval = e.index;
                                 });
                               }))
                           .toList()),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trial3/logic/requesting.dart';
 
 final List breadlist = [
   "Butter Bread",
@@ -9,7 +10,22 @@ final List breadlist = [
   "Brown Bread"
 ];
 
-class Cart extends StatelessWidget {
+class Cart extends StatefulWidget {
+  Cart({Key key}) : super(key: key);
+
+  @override
+  _CartState createState() => _CartState();
+}
+
+class _CartState extends State<Cart> {
+  Future<OrderRequestList> futureorder;
+
+  @override
+  void initState() {
+    super.initState();
+    futureorder = fetchData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,52 +58,64 @@ class Cart extends StatelessWidget {
                   //   image: AssetImage("assets/images/baker3.jpg"),
                   // ),
                 ),
-                child: ListView(
-                  children: <Widget>[
-                    b,
-                    // Text("I am a boy")
-                    ListTile(
-                      leading: CircleAvatar(
-                        child: Icon(Icons.add),
-                      ),
-                      title: Text(
-                        "Sugar Bread",
-                      ),
-                      subtitle: Text("7 pieces of 1.50\n2 pieces of 2.0"),
-                      trailing: Icon(Icons.delete),
-                    ),
-                    Divider(
-                      color: Colors.black,
-                    ),
-                    ListTile(
-                      leading: CircleAvatar(
-                        child: Icon(Icons.add),
-                      ),
-                      title: Text(
-                        "Butter Bread",
-                      ),
-                      subtitle: Text("7 pieces of 1.50\n2 pieces of 2.0"),
-                      trailing: Icon(Icons.delete),
-                    ),
-                    Divider(
-                      color: Colors.black,
-                    ),
-                    ListTile(
-                      leading: CircleAvatar(
-                        child: Icon(Icons.add),
-                      ),
-                      title: Text(
-                        "Wheat Bread",
-                        
-                      ),
-                      subtitle: Text("7 pieces of 1.50\n2 pieces of 2.0"),
-                      trailing: Icon(Icons.delete),
-                    ),
-                    Divider(
-                      color: Colors.black,
-                    ),
-                  ],
+                child: Center(
+                  child: FutureBuilder<OrderRequestList>(
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Text(snapshot.data.single_value_order);
+                      } else if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      }
+                      return CircularProgressIndicator();
+                    },
+                  ),
                 ),
+                // child: ListView(
+                //   children: <Widget>[
+                //     b,
+                //     // Text("I am a boy")
+                //     ListTile(
+                //       leading: CircleAvatar(
+                //         child: Icon(Icons.add),
+                //       ),
+                //       title: Text(
+                //         "Sugar Bread",
+                //       ),
+                //       subtitle: Text("7 pieces of 1.50\n2 pieces of 2.0"),
+                //       trailing: Icon(Icons.delete),
+                //     ),
+                //     Divider(
+                //       color: Colors.black,
+                //     ),
+                //     ListTile(
+                //       leading: CircleAvatar(
+                //         child: Icon(Icons.add),
+                //       ),
+                //       title: Text(
+                //         "Butter Bread",
+                //       ),
+                //       subtitle: Text("7 pieces of 1.50\n2 pieces of 2.0"),
+                //       trailing: Icon(Icons.delete),
+                //     ),
+                //     Divider(
+                //       color: Colors.black,
+                //     ),
+                //     ListTile(
+                //       leading: CircleAvatar(
+                //         child: Icon(Icons.add),
+                //       ),
+                //       title: Text(
+                //         "Wheat Bread",
+
+                //       ),
+                //       subtitle: Text("7 pieces of 1.50\n2 pieces of 2.0"),
+                //       trailing: Icon(Icons.delete),
+                //     ),
+                //     Divider(
+                //       color: Colors.black,
+                //     ),
+                //   ],
+                // ),
               ),
               SizedBox(
                 height: 15,
@@ -124,21 +152,20 @@ class Cart extends StatelessWidget {
   }
 }
 
-
-
-Widget b = new Expanded(child:ListView.builder(
-  itemCount: 2,
-  itemBuilder: (context, index) {
-    return ListTile(
-                      leading: CircleAvatar(
-                        child: Icon(Icons.add),
-                      ),
-                      title: Text(
-                        "boy",
-                        
-                      ),
-                      subtitle: Text("7 pieces of 1.50\n2 pieces of 2.0"),
-                      trailing: Icon(Icons.delete),
-                    );
-  },
-),);
+Widget b = new Expanded(
+  child: ListView.builder(
+    itemCount: 2,
+    itemBuilder: (context, index) {
+      return ListTile(
+        leading: CircleAvatar(
+          child: Icon(Icons.add),
+        ),
+        title: Text(
+          "boy",
+        ),
+        subtitle: Text("7 pieces of 1.50\n2 pieces of 2.0"),
+        trailing: Icon(Icons.delete),
+      );
+    },
+  ),
+);
