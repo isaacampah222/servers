@@ -60,9 +60,10 @@ class _CartState extends State<Cart> {
                 ),
                 child: Center(
                   child: FutureBuilder<OrderRequestList>(
+                    future: futureorder,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        return Text(snapshot.data.single_value_order);
+                        return Text(snapshot.data.ordervalues.toString());
                       } else if (snapshot.hasError) {
                         return Text('${snapshot.error}');
                       }

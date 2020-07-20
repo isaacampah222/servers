@@ -16,20 +16,30 @@ Future<OrderRequestList> fetchData() async {
 
 class OrderRequestList {
   // ignore: non_constant_identifier_names
-  final String customer_id;
-  // ignore: non_constant_identifier_names
-  final String customer_name;
-  // ignore: non_constant_identifier_names
-  final String single_value_order;
-
+  final List<OrderValue> ordervalues;
   // ignore: non_constant_identifier_names
   OrderRequestList(
-      {this.customer_id, this.customer_name, this.single_value_order});
+      // ignore: non_constant_identifier_names
+      {this.ordervalues});
 
-  factory OrderRequestList.fromJson(Map<String, dynamic> json) {
-    return OrderRequestList(
+  factory OrderRequestList.fromJson(List<dynamic> json) {
+    List<OrderValue> order = new List<OrderValue>();
+    order = json.map((e) => OrderValue.fromJson(e)).toList();
+    return new OrderRequestList(ordervalues: order);
+  }
+}
+
+class OrderValue {
+  final String customer_id;
+  final String customer_name;
+  final String single_order_value;
+
+  OrderValue({this.customer_id, this.customer_name, this.single_order_value});
+
+  factory OrderValue.fromJson(Map<String, dynamic> json) {
+    return new OrderValue(
         customer_id: json['customer_id'],
         customer_name: json['customer_name'],
-        single_value_order: json['single_order_value']);
+        single_order_value: json['single_order_value']);
   }
 }

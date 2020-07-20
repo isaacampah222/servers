@@ -4,6 +4,8 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:trial3/Constants/cardbuilder.dart';
 import 'package:trial3/Constants/myDrawer.dart';
 
+import 'cart.dart';
+
 class OrderScreen extends StatefulWidget {
   @override
   _OrderScreenState createState() => _OrderScreenState();
@@ -86,7 +88,14 @@ class _OrderScreenState extends State<OrderScreen> {
                       Icons.shopping_cart,
                       color: Colors.white,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Cart(),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
