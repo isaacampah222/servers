@@ -63,7 +63,13 @@ class _CartState extends State<Cart> {
                     future: futureorder,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        return Text(snapshot.data.ordervalues.toString());
+                        List<OrderValue> x = snapshot.data.ordervalues;
+
+                        return ListTile(
+                          title: Text(
+                              x[0].customer_id + "   " + x[0].customer_name),
+                          subtitle: Text(x[0].single_order_value),
+                        );
                       } else if (snapshot.hasError) {
                         return Text('${snapshot.error}');
                       }

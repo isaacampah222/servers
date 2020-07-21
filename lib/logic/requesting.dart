@@ -8,7 +8,7 @@ Future<OrderRequestList> fetchData() async {
       await http.get('https://almaweb.herokuapp.com/viewset/order/');
 
   if (response.statusCode == 200) {
-    OrderRequestList.fromJson(json.decode(response.body));
+    return OrderRequestList.fromJson(json.decode(response.body));
   } else {
     throw Exception('could not fetch data');
   }
