@@ -64,11 +64,24 @@ class _CartState extends State<Cart> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         List<OrderValue> x = snapshot.data.ordervalues;
-
-                        return ListTile(
-                          title: Text(
-                              x[0].customer_id + "   " + x[0].customer_name),
-                          subtitle: Text(x[0].single_order_value),
+                        return ListView.builder(
+                          itemBuilder: (context, index) => ListTile(
+                              title: Text(x[index].customer_id +
+                                  "   " +
+                                  x[index].order_id),
+                              subtitle: Text(x[index].order_string),
+                              trailing: IconButton(
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () {
+                                    setState(
+                                      () {
+                                        print(index);
+                                        x.removeAt(index);
+                                        makeDelete(x[index].id);
+                                      },
+                                    );
+                                  })),
+                          itemCount: x.length,
                         );
                       } else if (snapshot.hasError) {
                         return Text('${snapshot.error}');
@@ -77,6 +90,7 @@ class _CartState extends State<Cart> {
                     },
                   ),
                 ),
+
                 // child: ListView(
                 //   children: <Widget>[
                 //     b,

@@ -4,8 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 Future<OrderRequestList> fetchData() async {
-  final response =
-      await http.get('https://almaweb.herokuapp.com/viewset/order/');
+  final response = await http.get('http://192.168.8.126:8000/order/');
 
   if (response.statusCode == 200) {
     return OrderRequestList.fromJson(json.decode(response.body));
@@ -30,16 +29,40 @@ class OrderRequestList {
 }
 
 class OrderValue {
+  final int id;
   final String customer_id;
-  final String customer_name;
-  final String single_order_value;
+  final String order_id;
+  final String order_string;
 
-  OrderValue({this.customer_id, this.customer_name, this.single_order_value});
+  OrderValue({this.id, this.customer_id, this.order_id, this.order_string});
 
   factory OrderValue.fromJson(Map<String, dynamic> json) {
     return new OrderValue(
+        id: json['id'],
         customer_id: json['customer_id'],
-        customer_name: json['customer_name'],
-        single_order_value: json['single_order_value']);
+        order_id: json['order_id'],
+        order_string: json['order_string']);
   }
+}
+
+makePost(String body) async {
+  String url = 'http://192.168.8.126:8000/order/';
+  Map<String, String> headers = {"content-type": "application/json"};
+  String json = body;
+
+  http.Response resp = await http.post(url, headers: headers, body: json);
+  int statuscode = resp.statusCode;
+  print(statuscode.toString());
+  String bd = resp.body;
+  print(bd);
+}
+
+makeDelete(int id) async{
+  String url = 'http://192.168.8.126:8000/order/$id/';
+
+  http.Response response = await http.delete(url);
+
+  String body = response.body;
+  print(body);
+
 }

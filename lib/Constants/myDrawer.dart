@@ -161,6 +161,7 @@ class _MyDrawer extends State<MyDrawer> {
   void handleListTap(String name) {
     switch (name) {
       case "Place an order":
+      Navigator.pop(context);
         break;
       case "Direct Call":
         setState(() {

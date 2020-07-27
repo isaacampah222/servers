@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:trial3/Constants/cardbuilder.dart';
 import 'package:trial3/Constants/myDrawer.dart';
+import 'package:trial3/logic/requesting.dart';
 
 import 'cart.dart';
 
@@ -17,16 +18,19 @@ class _OrderScreenState extends State<OrderScreen> {
   int radiovalue = 0;
   List<Future> handlers;
   String selectedItem;
+  TextEditingController qtext;
+  String unitprice;
 
   @override
   void initState() {
     super.initState();
-    //   handlers = [
-    //     handleOrder(),
-    //   hihi(context),
-    //   handleSettings(),
-    //   handleAbout()
-    // ];
+    qtext = new TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    qtext.dispose();
+    super.dispose();
   }
 
   @override
@@ -271,6 +275,7 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
   Future<void> hihi(context) {
+    String b;
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -281,7 +286,6 @@ class _OrderScreenState extends State<OrderScreen> {
           content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               int alllval = -1;
-              String selectedradio;
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
@@ -291,68 +295,74 @@ class _OrderScreenState extends State<OrderScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  // Text("Unit Prize:", style: TextStyle(color: Colors.black)),
-                  // Row(
-                  //   children: <Widget>[
-                  //     Radio(
-                  //       value: 0,
-                  //       groupValue: radiovalue,
-                  //       onChanged: (int value) {
-                  //         setState(
-                  //           () {
-                  //             radiovalue = value;
-                  //           },
-                  //         );
-                  //       },
-                  //     ),
-                  //     Text("1.50")
-                  //   ],
-                  // ),
-                  // Row(
-                  //   children: <Widget>[
-                  //     Radio(
-                  //       value: 1,
-                  //       groupValue: radiovalue,
-                  //       onChanged: (int value) {
-                  //         setState(
-                  //           () {
-                  //             radiovalue = value;
-                  //           },
-                  //         );
-                  //       },
-                  //     ),
-                  //     Text("2.00")
-                  //   ],
-                  // ),
-                  // Row(
-                  //   children: <Widget>[
-                  //     Radio(
-                  //       value: 2,
-                  //       groupValue: radiovalue,
-                  //       onChanged: (int value) {
-                  //         setState(
-                  //           () {
-                  //             radiovalue = value;
-                  //           },
-                  //         );
-                  //       },
-                  //     ),
-                  //     Text("2.50")
-                  //   ],
-                  // ),
-                  Column(
-                      children: alertList
-                          .map((e) => RadioListTile(
-                              title: Text("${e.amount}"),
-                              value: e.index,
-                              groupValue: alllval,
-                              onChanged: (val) {
-                                setState(() {
-                                  // selectedradio = e.amount;
-                                  alllval = e.index;
-                                });
-                              }))
-                          .toList()),
+                  Text("Unit Prize:", style: TextStyle(color: Colors.black)),
+                  Row(
+                    children: <Widget>[
+                      Radio(
+                        value: 0,
+                        groupValue: radiovalue,
+                        onChanged: (int value) {
+                          setState(
+                            () {
+                              radiovalue = value;
+                              unitprice = "1.50";
+                            },
+                          );
+                          print(unitprice);
+                        },
+                      ),
+                      Text("1.50")
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Radio(
+                        value: 1,
+                        groupValue: radiovalue,
+                        onChanged: (int value) {
+                          setState(
+                            () {
+                              radiovalue = value;
+                              unitprice = "2.00";
+                            },
+                          );
+                          print(unitprice);
+                        },
+                      ),
+                      Text("2.00")
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Radio(
+                        value: 2,
+                        groupValue: radiovalue,
+                        onChanged: (int value) {
+                          setState(
+                            () {
+                              radiovalue = value;
+                              unitprice = "2.50";
+                            },
+                          );
+                          print(unitprice);
+                        },
+                      ),
+                      Text("2.50")
+                    ],
+                  ),
+                  // Column(
+                  //     children: alertList
+                  //         .map((e) => RadioListTile(
+                  //             title: Text("${e.amount}"),
+                  //             value: e.index,
+                  //             groupValue: alllval,
+                  //             onChanged: (val) {
+                  //               setState(() {
+                  //                 // selectedradio = e.amount;
+                  //                 alllval = e.index;
+                  //               });
+                  //             }))
+                  //         .toList()),
                   Text(
                     "Quantity:",
                     style: TextStyle(color: Colors.black),
@@ -362,6 +372,7 @@ class _OrderScreenState extends State<OrderScreen> {
                         left: 40.0, right: 40, bottom: 20),
                     child: TextField(
                       keyboardType: TextInputType.number,
+                      controller: qtext,
                     ),
                   ),
                   Row(
@@ -369,7 +380,16 @@ class _OrderScreenState extends State<OrderScreen> {
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
                       DialogButton(
-                          width: 100, child: Text("Save"), onPressed: null),
+                          width: 100,
+                          child: Text("Save"),
+                          onPressed: () {
+                            String ostring =
+                                "$selectedItem GHC$unitprice x${qtext.text}";
+                            b = '{"customer_id": "222", "order_id": "221", "order_string": "$ostring"}';
+                            makePost(b);
+                            Navigator.pop(context);
+                            qtext.clear();
+                          }),
                       DialogButton(
                           width: 100,
                           child: Text("Cancel"),
