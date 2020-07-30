@@ -57,27 +57,25 @@ makePost(String body) async {
   print(bd);
 }
 
-makeDelete(int id) async{
+makeDelete(int id) async {
   String url = 'http://192.168.8.126:8000/order/$id/';
 
   http.Response response = await http.delete(url);
 
   String body = response.body;
   print(body);
-
 }
 
-
-signIn(String body) async{
+Future<bool> signIn(String body) async {
   String url = 'http://192.168.8.126:8000/login/';
   Map<String, String> headers = {"content-type": "application/json"};
-  String json = body;
+  String jsonbody = body;
 
-  http.Response response = await http.post(url,headers:headers, body:json);
+  http.Response response = await http.post(url, headers: headers, body: jsonbody);
   int statuscode = response.statusCode;
   String statusbody = response.body;
   print(statusbody);
-  print(statuscode);
-  return statuscode;
+  
+  // print(statuscode);
+  
 }
-
