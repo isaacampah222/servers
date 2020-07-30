@@ -66,3 +66,18 @@ makeDelete(int id) async{
   print(body);
 
 }
+
+
+signIn(String body) async{
+  String url = 'http://192.168.8.126:8000/login/';
+  Map<String, String> headers = {"content-type": "application/json"};
+  String json = body;
+
+  http.Response response = await http.post(url,headers:headers, body:json);
+  int statuscode = response.statusCode;
+  String statusbody = response.body;
+  print(statusbody);
+  print(statuscode);
+  return statuscode;
+}
+
